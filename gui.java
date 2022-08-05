@@ -29,9 +29,9 @@ public class gui extends JFrame implements ActionListener {
     private Font componentFont = new Font(Font.SANS_SERIF,Font.PLAIN,17);
 
 
-    private JLabel Header = new JLabel("COMP5120 FINAL PROJECT");
+    private JLabel Header = new JLabel("");
     private JComboBox<String> tableSelect;
-    private JLabel inputLabel = new JLabel("Please submit your SQL query:");
+    private JLabel inputLabel = new JLabel("SQL Query:");
     private JTextField inputField = new JTextField(10);
     private JButton inputClear = new JButton("Clear");
     private JButton inputSubmit = new JButton("Submit");
@@ -41,7 +41,7 @@ public class gui extends JFrame implements ActionListener {
 
     gui(dbUtil exec) {
 
-        super("COMP 5120: Final Project");
+        super("Final Project");
         dbInter = exec;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,30 +52,14 @@ public class gui extends JFrame implements ActionListener {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.LINE_AXIS));
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.PAGE_AXIS));
-        inputSubmitPanel.setLayout(new BoxLayout(inputSubmitPanel,
-                BoxLayout.LINE_AXIS));
+        inputSubmitPanel.setLayout(new BoxLayout(inputSubmitPanel, BoxLayout.LINE_AXIS));
 
         tableLabelPanel.setLayout(new FlowLayout());
         Header.setFont(titleFont);
         titlePanel.add(Header);
         titlePanel.add(Box.createRigidArea(new Dimension(80, 0)));
 
-        List<String> resultString = new ArrayList<String>();
-        try {
-            dbResults = dbInter.execStatement("SHOW TABLES");
-
-            while(dbResults.next()) {
-                resultString.add(dbResults.getString(1));
-            }
-        } catch(SQLException e) {
-            showErrorMessage(e);
-        }
-
-        String[] dbTables = new String[resultString.size()];
-        for(int i=0; i<resultString.size(); i++) {
-            dbTables[i] = resultString.get(i);
-        }
-
+        String[] dbTables = getAllTables();
         tableSelect = new JComboBox<>(dbTables);
         tableSelect.setFont(componentFont);
 
@@ -122,6 +106,26 @@ public class gui extends JFrame implements ActionListener {
         add(mainPanel);
 
         setSize(800,480);
+    }
+
+    private String[] getAllTables() {
+        List<String> resultString = new ArrayList<>();
+        try {
+            dbResults = dbInter.execStatement("SHOW TABLES");
+
+            while(dbResults.next()) {
+                resultString.add(dbResults.getString(1));
+            }
+        } catch(SQLException e) {
+            showErrorMessage(e);
+        }
+
+        String[] tables = new String[resultString.size()];
+        for(int i=0; i<resultString.size(); i++) {
+            tables[i] = resultString.get(i);
+        }
+
+        return tables;
     }
 
     private void createTable(ResultSet rs) {
