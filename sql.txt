@@ -66,7 +66,7 @@ from books B, shippers Sh, orders O, order_detail OD
 where O.ShipperID = Sh.ShipperID
 AND O.OrderID = OD.OrderID
 AND B.BookID = OD.BookID
-AND O.ShippedDate = '8/4/16'
+AND O.ShippedDate = '8/4/2016'
 
 
 10. Show the unique names of all the books *lastname1 firstname1* and
