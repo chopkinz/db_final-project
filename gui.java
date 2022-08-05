@@ -1,17 +1,19 @@
-import javax.swing.*;
-import javax.swing.table.*;
+// ----------------------------------------------
+// Matthew Bentz, Chase Hopkins, James Haberstroh
+
 import java.awt.*;
+import javax.swing.*;
+import java.util.List;
 import java.awt.event.*;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.List;
+import javax.swing.table.*;
 import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
 
 public class gui extends JFrame implements ActionListener {
 
-
-    private exec dbInter = null;
+    private dbUtil dbInter = null;
     private ResultSet dbResults = null;
     private ResultSetMetaData dbMeta = null;
 
@@ -31,23 +33,16 @@ public class gui extends JFrame implements ActionListener {
     private JComboBox<String> tableSelect;
     private JLabel inputLabel = new JLabel("Please submit your SQL query:");
     private JTextField inputField = new JTextField(10);
-    private JButton inputClear = new JButton("Reset");
+    private JButton inputClear = new JButton("Clear");
     private JButton inputSubmit = new JButton("Submit");
     private JTable ResultTable = null;
-    private JLabel tableLabel = new JLabel("Resulting table");
+    private JLabel tableLabel = new JLabel("Results Table");
     private JScrollPane tablePane = new JScrollPane(ResultTable);
 
-    gui(String dbNameIn, String dbPortIn, String userIn, String pwIn) {
+    gui(dbUtil exec) {
 
         super("COMP 5120: Final Project");
-        try {
-            dbInter = new exec(dbNameIn,
-                    dbPortIn,
-                    userIn,
-                    pwIn);
-        } catch(SQLException e) {
-            showErrorMessage(e);
-        }
+        dbInter = exec;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
@@ -126,7 +121,7 @@ public class gui extends JFrame implements ActionListener {
         add(Box.createRigidArea(new Dimension(800,20)));
         add(mainPanel);
 
-        setSize(600,480);
+        setSize(800,480);
     }
 
     private void createTable(ResultSet rs) {
