@@ -31,12 +31,12 @@ public class gui extends JFrame implements ActionListener {
 
     private JLabel Header = new JLabel("");
     private JComboBox<String> tableSelect;
-    private JLabel inputLabel = new JLabel("SQL Query:");
-    private JTextField inputField = new JTextField(10);
+    private JLabel inputLabel = new JLabel("");
+    private JTextArea inputField = new JTextArea();
     private JButton inputClear = new JButton("Clear");
     private JButton inputSubmit = new JButton("Submit");
     private JTable ResultTable = null;
-    private JLabel tableLabel = new JLabel("Results Table");
+    private JLabel tableLabel = new JLabel("");
     private JScrollPane tablePane = new JScrollPane(ResultTable);
 
     gui(dbUtil exec) {
@@ -68,6 +68,10 @@ public class gui extends JFrame implements ActionListener {
 
         inputLabel.setFont(labelFont);
         inputPanel.add(inputLabel);
+        inputField.setMinimumSize(new Dimension(80,100));
+        inputField.setPreferredSize(new Dimension(80, 100));
+        inputField.setLineWrap(true);
+        inputField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         inputPanel.add(inputField);
         inputClear.setFont(buttonFont);
         inputClear.addActionListener(this);
@@ -105,7 +109,7 @@ public class gui extends JFrame implements ActionListener {
         add(Box.createRigidArea(new Dimension(800,20)));
         add(mainPanel);
 
-        setSize(800,480);
+        setSize(800,600);
     }
 
     private String[] getAllTables() {
